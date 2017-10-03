@@ -1,0 +1,186 @@
+set nocompatible              " be iMproved, required
+filetype off                  " required
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+" alternatively, pass a path where Vundle should install plugins
+"call vundle#begin('~/some/path/here')
+
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'sjl/badwolf'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'Shougo/neocomplete.vim'
+Plugin 'm-kat/aws-vim'
+Plugin 'scrooloose/syntastic'
+Plugin 'nvie/vim-flake8'
+Plugin 'kien/ctrlp.vim'
+Plugin 'tpope/vim-fugitive'
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'elzr/vim-json'
+Plugin 'scrooloose/nerdtree'
+Plugin 'hashivim/vim-hashicorp-tools'
+Plugin 'tpope/vim-commentary'
+Plugin 'ekalinin/Dockerfile.vim'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" To ignore plugin indent changes, instead use:
+"filetype plugin on
+"
+" Brief help
+" :PluginList       - lists configured plugins
+" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+" :PluginSearch foo - searches for foo; append `!` to refresh local cache
+" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+"
+" see :h vundle for more details or wiki for FAQ
+" Put your non-Plugin stuff after this line
+"
+
+""" Custom part
+" Security
+set modelines=0
+" Search
+" highlight searches
+set hlsearch
+" do incremental searching, search as you type
+set incsearch
+" no ignorecase if Uppercase char present
+set smartcase
+" ignore case when searching
+set ignorecase
+" history : how many lines of history VIM has to remember
+set history=10000
+" always show report messages
+set report=0
+" Colors
+set background=dark
+set t_Co=256
+colorscheme badwolf
+syntax on
+" Use visualbell
+set visualbell
+" Fix backspace issue on vim8 
+set backspace=indent,eol,start
+" Force saving files that require root permission 
+cnoremap w!! w !sudo tee > /dev/null %
+" Fast scroll
+set ttyfast
+set lazyredraw
+" Show line number
+set number
+" Force UFT-8 encoding
+set encoding=utf-8
+" Use os clipboard
+set clipboard^=unnamed,unnamedplus
+" Highlight current line
+set cursorline
+set cursorcolumn
+hi CursorLine cterm=underline gui=underline 
+" status line
+set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-14.(%l,%c%V%)\ %P
+set laststatus=2
+
+""" Plugins config
+
+" Neocomplete
+" Use neocomplete.
+let g:neocomplete#enable_at_startup = 1
+" Use smartcase.
+let g:neocomplete#enable_smart_case = 1
+" Set minimum syntax keyword length.
+let g:neocomplete#sources#syntax#min_keyword_length = 3
+" Define dictionary.
+let g:neocomplete#sources#dictionary#dictionaries = {
+    \ 'default' : '',
+    \ 'vimshell' : $HOME.'/.vimshell_hist',
+    \ 'scheme' : $HOME.'/.gosh_completions'
+        \ }
+
+" Define keyword.
+if !exists('g:neocomplete#keyword_patterns')
+    let g:neocomplete#keyword_patterns = {}
+endif
+let g:neocomplete#keyword_patterns['default'] = '\h\w*'
+
+" Plugin key-mappings.
+inoremap <expr><C-g>     neocomplete#undo_completion()
+inoremap <expr><C-l>     neocomplete#complete_common_string()
+
+" Recommended key-mappings.
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
+  " For no inserting <CR> key.
+  "return pumvisible() ? "\<C-y>" : "\<CR>"
+endfunction
+" <TAB>: completion.
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ neocomplete#start_manual_complete()
+function! s:check_back_space() "{{{
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~ '\s'
+endfunction"}}}
+inoremap <expr><Down> pumvisible() ? "\<C-n>" : "\<Down>"
+inoremap <expr><Up> pumvisible() ? "\<C-p>" : "\<Up>"
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+" Close popup by <Space>.
+"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+" Enable heavy omni completion.
+if !exists('g:neocomplete#sources#omni#input_patterns')
+  let g:neocomplete#sources#omni#input_patterns = {}
+endif
+
+" Airline
+if !exists('g:airline_symbols')
+  let g:airline_symbols = {}
+endif
+" use powerline font if installed
+" let g:airline_powerline_fonts = 1
+" let g:airline#extensions#tabline#enabled = 1
+
+let g:airline_theme                        = 'powerlineish'
+let g:airline#extensions#branch#enable     = 1
+let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#bufferline#enabled= 1
+
+
+" vim-powerline symbols
+let g:airline_left_sep           = '▶'
+let g:airline_left_alt_sep       = '»'
+let g:airline_right_sep          = '◀'
+let g:airline_right_alt_sep      = '«'
+let g:airline_symbols.branch     = '⤴' "➔, ➥, ⎇
+let g:airline_symbols.readonly   = '⊘'
+let g:airline_symbols.linenr     = '¶'
+let g:airline_symbols.paste      = 'ρ'
+let g:airline_symbols.whitespace = 'Ξ'
+let g:airline_section_b          = '%{getcwd()}'
+
+
+" aws-vim
+let g:AWSVimValidate = 1
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "./bundle/aws-vim/snips"]
+
+" NerdTree
+let NERDTreeIgnore=['\~$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
+
+autocmd VimEnter * NERDTree
+autocmd VimEnter * wincmd p
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+let NERDTreeMapOpenInTab='\r'

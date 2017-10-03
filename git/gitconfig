@@ -1,0 +1,37 @@
+[user]
+	name  = Piotr Kieszczyński
+	email = piotr.kieszczynski@nordcloud.com
+[branch]
+	autosetuprebase = always
+[branch "master"]
+	rebase = true 
+[alias]
+	git = !exec git
+	a = add
+	b = branch
+	c = commit
+	branches = branch -a
+	stashes = stash list
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+	prune = fetch --prune
+	s = status -sb
+	undo = reset --soft HEAD^
+	stash-all = stash save --include-untracked
+[pull]
+	rebase = true
+[merge]
+	ff = only
+	conflictstyle = diff3
+[push]
+	default = simple
+	followTags = true
+[status]
+	showUntrackedFiles = all
+[transfer]
+	fsckobjects = true
+[diff]
+        tool = icdiff
+[difftool]
+	prompt = false
+[difftool "icdiff"]
+        cmd = /usr/local/bin/icdiff --line-numbers $LOCAL $REMOTE
