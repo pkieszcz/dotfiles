@@ -1,90 +1,139 @@
-set nocompatible              " be iMproved, required
-filetype off                  " required
+"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
+"                                                                              "
+"                       __   _ _ _ __ ___  _ __ ___                            "
+"                       \ \ / / | '_ ` _ \| '__/ __|                           "
+"                        \ V /| | | | | | | | | (__                            "
+"                         \_/ |_|_| |_| |_|_|  \___|                           "
+"                                                                              "
+"                                                                              "
+"++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
 
+" Be iMproved
+set nocompatible
+
+"=====================================================
+"" Vundle settings
+"=====================================================
+filetype off                 " required
+	
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'sjl/badwolf'
-Plugin 'altercation/vim-colors-solarized'
+
+"-------------------=== Code/Project navigation ===-------------
+Plugin 'scrooloose/nerdtree'
+Plugin 'kien/ctrlp.vim'
+Plugin 'majutsushi/tagbar'
+
+"-------------------=== Colors ===------------------------------
+Plugin 'flazz/vim-colorschemes'
+
+"-------------------=== Airline ===-----------------------------
+Plugin 'vim-airline/vim-airline'
+Plugin 'vim-airline/vim-airline-themes'
+
+"-------------------=== Other ===-------------------------------
 Plugin 'Shougo/neocomplete.vim'
 Plugin 'm-kat/aws-vim'
 Plugin 'scrooloose/syntastic'
 Plugin 'nvie/vim-flake8'
-Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'elzr/vim-json'
-Plugin 'scrooloose/nerdtree'
 Plugin 'hashivim/vim-hashicorp-tools'
 Plugin 'tpope/vim-commentary'
 Plugin 'ekalinin/Dockerfile.vim'
+Plugin 'sheerun/vim-polyglot'
+Plugin 'tmhedberg/SimpylFold'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
-" To ignore plugin indent changes, instead use:
-"filetype plugin on
-"
-" Brief help
-" :PluginList       - lists configured plugins
-" :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
-" :PluginSearch foo - searches for foo; append `!` to refresh local cache
-" :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
-"
-" see :h vundle for more details or wiki for FAQ
-" Put your non-Plugin stuff after this line
-"
+filetype plugin on
 
-""" Custom part
-" Security
+"=====================================================
+"" General settings
+"=====================================================
+set secure                           " Security
 set modelines=0
-" Search
-" highlight searches
-set hlsearch
-" do incremental searching, search as you type
-set incsearch
-" no ignorecase if Uppercase char present
-set smartcase
-" ignore case when searching
-set ignorecase
-" history : how many lines of history VIM has to remember
-set history=10000
-" always show report messages
-set report=0
-" Colors
-set background=dark
-set t_Co=256
-colorscheme badwolf
-syntax on
-" Use visualbell
-set visualbell
-" Fix backspace issue on vim8 
-set backspace=indent,eol,start
-" Force saving files that require root permission 
-cnoremap w!! w !sudo tee > /dev/null %
-" Fast scroll
-set ttyfast
+
+syntax on                            " syntax highlight
+
+set t_Co=256                         " set 256 colors
+set background=dark                  " background
+colorscheme badwolf                  " set color scheme
+
+set clipboard^=unnamed,unnamedplus   " use system clipboard
+
+set number                           " show line number
+set history=10000                    " how many lines of history VIM has to remember
+set report=0                         " always show report messages
+
+set ttyfast                          " terminal acceleration
 set lazyredraw
-" Show line number
-set number
-" Force UFT-8 encoding
-set encoding=utf-8
-" Use os clipboard
-set clipboard^=unnamed,unnamedplus
-" Highlight current line
+
+set backspace=indent,eol,start       " fix backspace issue on vim8
+
+set encoding=utf-8                   " utf-8 by default"
+
+set magic
+set title
+
+set novisualbell
+set noerrorbells
+
+set shell=/bin/bash
+
+set nowrap
+set showcmd
+set showmode
+
+" Force saving files that require root permission
+cnoremap w!! w !sudo tee > /dev/null %
+
+"=====================================================
+"" Search settings
+"=====================================================
+set hlsearch                    " highlight searches
+set incsearch                   " incremental searches as we type
+set smartcase                   " no ignorecase if Uppercase char present
+set ignorecase                  " ignore case when searching"
+
+"=====================================================
+"" CursorLine
+"=====================================================
 set cursorline
 set cursorcolumn
 hi CursorLine cterm=underline gui=underline 
-" status line
+
+"=====================================================
+"" Split settings
+"=====================================================
+set splitbelow
+set splitright
+
+"split navigations
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+
 set statusline=%<%f\ %h%m%r%=%k[%{(&fenc==\"\")?&enc:&fenc}%{(&bomb?\",BOM\":\"\")}]\ %-14.(%l,%c%V%)\ %P
 set laststatus=2
+" 80 and 120 char limit
+let &colorcolumn=join(range(81,999),",")
+highlight ColorColumn ctermbg=235 guibg=#2c2d27
+let &colorcolumn="80,".join(range(120,999),",")
+" Splits
+" Enable folding
+set foldmethod=indent
+set foldlevel=99
+" Enable folding with the spacebar
+nnoremap <space> za
 
 """ Plugins config
 
@@ -154,24 +203,32 @@ endif
 " let g:airline_powerline_fonts = 1
 " let g:airline#extensions#tabline#enabled = 1
 
-let g:airline_theme                        = 'powerlineish'
+let g:airline_theme                        = 'badwolf'
 let g:airline#extensions#branch#enable     = 1
 let g:airline#extensions#syntastic#enabled = 1
 let g:airline#extensions#bufferline#enabled= 1
+function! MyLineNumber()
+  return substitute(line('.'), '\d\@<=\(\(\d\{3\}\)\+\)$', ',&', 'g'). ' | '.
+    \    substitute(line('$'), '\d\@<=\(\(\d\{3\}\)\+\)$', ',&', 'g')
+endfunction
 
+call airline#parts#define('linenr', {'function': 'MyLineNumber', 'accents': 'bold'})
+
+let g:airline_section_z = airline#section#create(['%3p%%: ', 'linenr', ':%3v'])
+
+function! WindowNumber(...)
+    let builder = a:1
+    let context = a:2
+    call builder.add_section('airline_b', '%{tabpagewinnr(tabpagenr())}')
+    return 0
+endfunction
+
+call airline#add_statusline_func('WindowNumber')
+call airline#add_inactive_statusline_func('WindowNumber')
 
 " vim-powerline symbols
-let g:airline_left_sep           = '▶'
-let g:airline_left_alt_sep       = '»'
-let g:airline_right_sep          = '◀'
-let g:airline_right_alt_sep      = '«'
-let g:airline_symbols.branch     = '⤴' "➔, ➥, ⎇
 let g:airline_symbols.readonly   = '⊘'
-let g:airline_symbols.linenr     = '¶'
-let g:airline_symbols.paste      = 'ρ'
-let g:airline_symbols.whitespace = 'Ξ'
 let g:airline_section_b          = '%{getcwd()}'
-
 
 " aws-vim
 let g:AWSVimValidate = 1
@@ -184,3 +241,10 @@ autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd p
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 let NERDTreeMapOpenInTab='\r'
+
+
+"""""""""""""""""""""""""""""""""""""""""""""" 
+let g:SimpylFold_docstring_preview=1
+let python_highlight_all=1
+
+au BufNewFile,BufRead *.py set tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix

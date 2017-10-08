@@ -13,10 +13,12 @@
 	branches = branch -a
 	stashes = stash list
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-	prune = fetch --prune
-	s = status -sb
-	undo = reset --soft HEAD^
-	stash-all = stash save --include-untracked
+        prune = fetch --prune
+        s = status -sb
+        undo = reset --soft HEAD^
+        stash-all = stash save --include-untracked
+        aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ \t => \\2/' | sort
+        tags = tag -l
 [pull]
 	rebase = true
 [merge]
@@ -34,4 +36,21 @@
 [difftool]
 	prompt = false
 [difftool "icdiff"]
-        cmd = /usr/local/bin/icdiff --line-numbers $LOCAL $REMOTE
+	cmd = /usr/local/bin/icdiff --line-numbers $LOCAL $REMOTE
+[color]
+	ui = true
+[color "branch"]
+        current = yellow reverse
+        local = yellow
+        remote = green
+
+[color "diff"]
+        meta = yellow bold
+        frag = magenta bold
+        old = red bold
+        new = green bold
+
+[color "status"]
+        added = yellow
+        changed = green
+        untracked = red
