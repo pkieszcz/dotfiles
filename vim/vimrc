@@ -25,46 +25,54 @@ Plugin 'VundleVim/Vundle.vim'
 
 "-------------------=== Code/Project navigation ===-------------
 Plugin 'scrooloose/nerdtree'
+Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 
 "-------------------=== Colors ===------------------------------
 Plugin 'flazz/vim-colorschemes'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'joshdick/onedark.vim'
 
 "-------------------=== Airline ===-----------------------------
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
-"-------------------=== Snippets ===----------------------------
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
+"-------------------=== Lint ===--------------------------------
+Plugin 'scrooloose/syntastic'
+
+"-------------------=== Git ===---------------------------------
+Plugin 'tpope/vim-fugitive'
+Plugin 'airblade/vim-gitgutter'
 
 "-------------------=== Other ===-------------------------------
-Plugin 'Shougo/neocomplete.vim'
-Plugin 'tpope/vim-fugitive'
-Plugin 'jiangmiao/auto-pairs'
 Plugin 'tpope/vim-commentary'
-Plugin 'sheerun/vim-polyglot'
-Plugin 'tmhedberg/SimpylFold'
-Plugin 'scrooloose/syntastic'
+Plugin 'Shougo/deoplete.nvim'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'junegunn/vim-easy-align'
 Plugin 'Chiel92/vim-autoformat'
+Plugin 'zchee/deoplete-jedi'
+Plugin 'ntpeters/vim-better-whitespace'
+Plugin 'sheerun/vim-polyglot'
 " Plugin 'elentok/plaintasks.vim'
 " Plugin 'tpope/vim-surround'
 " Plugin 'Townk/vim-autoclose'
 " Plugin 'michaeljsmith/vim-indent-object'
 " Plugin 'fisadev/dragvisuals.vim'
 " Plugin 'lilydjwg/colorizer'
+"
+" Plugin 'SirVer/ultisnips'
+" Plugin 'honza/vim-snippets'
 "-------------------=== Languages ===---------------------------
-Plugin 'ekalinin/Dockerfile.vim'
-Plugin 'hashivim/vim-hashicorp-tools'
-Plugin 'm-kat/aws-vim'
-Plugin 'elzr/vim-json'
-
+" Plugin 'ekalinin/Dockerfile.vim'
+" Plugin 'hashivim/vim-hashicorp-tools'
+" Plugin 'm-kat/aws-vim'
+" Plugin 'elzr/vim-json'
 "-------------------=== Python ===------------------------------
-Plugin 'nvie/vim-flake8'
-Plugin 'fisadev/vim-isort'
-Plugin 'davidhalter/jedi-vim'
-Plugin 'tell-k/vim-autopep8'
+" Plugin 'nvie/vim-flake8'
+" Plugin 'fisadev/vim-isort'
+" Plugin 'davidhalter/jedi-vim'
+"
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -77,16 +85,16 @@ set secure                           " Security
 set modelines=0
 
 syntax on                            " syntax highlight
-
 set nobackup
 
 set t_Co=256                         " set 256 colors
 set background=dark                  " background
-colorscheme badwolf                  " set color scheme
+let g:solarized_termcolors=256
+colorscheme onedark                  " set color scheme
 
 set clipboard^=unnamed,unnamedplus   " use system clipboard
 
-set number                           " show line number
+set number relativenumber            " show line number
 set history=10000                    " how many lines of history VIM has to remember
 set report=0                         " always show report messages
 
@@ -102,8 +110,6 @@ set title
 
 set novisualbell
 set noerrorbells
-
-set shell=/bin/bash
 
 set nowrap
 set showcmd
@@ -133,116 +139,29 @@ hi CursorLine cterm=underline gui=underline
 set splitbelow
 set splitright
 
-"split navigations
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
-
 " 80 and 120 char limit
 let &colorcolumn=join(range(81,999),",")
-highlight ColorColumn ctermbg=235 guibg=#2c2d27
+highlight ColorColumn ctermbg=236 guibg=#2c2d27
 let &colorcolumn="80,".join(range(120,999),",")
-" Splits
 " Enable folding
 set foldmethod=indent
 set foldlevel=99
 " Enable folding with the spacebar
 nnoremap <space> za
 
-""" Plugins config
-
-" Neocomplete
-" Use neocomplete.
-let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
-let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-			\ 'default' : '',
-			\ 'vimshell' : $HOME.'/.vimshell_hist',
-			\ 'scheme' : $HOME.'/.gosh_completions'
-			\ }
-
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-	let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-" Plugin key-mappings.
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-	return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-	" For no inserting <CR> key.
-	"return pumvisible() ? "\<C-y>" : "\<CR>"
-endfunction
-" <TAB>: completion.
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" :
-			\ <SID>check_back_space() ? "\<TAB>" :
-			\ neocomplete#start_manual_complete()
-function! s:check_back_space() "{{{
-	let col = col('.') - 1
-	return !col || getline('.')[col - 1]  =~ '\s'
-endfunction"}}}
-inoremap <expr><Down> pumvisible() ? "\<C-n>" : "\<Down>"
-inoremap <expr><Up> pumvisible() ? "\<C-p>" : "\<Up>"
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
-" Enable omni completion.
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
-autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
-autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
-autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-" Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-	let g:neocomplete#sources#omni#input_patterns = {}
-endif
-
-" 'SirVer/ultisnips' options.
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<C-R>=UltiSnips#ExpandSnippet()"
-
-
-" Airline
-if !exists('g:airline_symbols')
-	let g:airline_symbols = {}
-endif
-" use powerline font if installed
-" let g:airline_powerline_fonts = 1
-" let g:airline#extensions#tabline#enabled = 1
-
-let g:airline_theme                        = 'badwolf'
-let g:airline#extensions#branch#enable     = 1
-let g:airline#extensions#syntastic#enabled = 1
-let g:airline#extensions#bufferline#enabled= 1
-
-" aws-vim
-let g:AWSVimValidate = 1
-let g:UltiSnipsSnippetDirectories=["UltiSnips", "./bundle/aws-vim/snips"]
-
-" NerdTree
+"==============================================================================
+"" Plugins config
+"==============================================================================
+au BufNewFile,BufRead *.py set tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
+"=====================================================
+"" scrooloose/nerdtree
+"=====================================================
 let NERDTreeIgnore=['\~$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
 
 autocmd VimEnter * NERDTree
 autocmd VimEnter * wincmd p
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
-let NERDTreeMapOpenInTab='\r'
-
+map <C-n> :NERDTreeToggle<CR>
 
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
@@ -250,14 +169,44 @@ let g:NERDDefaultAlign = 'left'
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 
-""""""""""""""""""""""""""""""""""""""""""""""
-let g:SimpylFold_docstring_preview=1
-let python_highlight_all=1
+"=====================================================
+"" Xuyuanp/nerdtree-git-plugin
+"=====================================================
+let g:NERDTreeIndicatorMapCustom = {
+    \ "Modified"  : "✹",
+    \ "Staged"    : "✚",
+    \ "Untracked" : "✭",
+    \ "Renamed"   : "➜",
+    \ "Unmerged"  : "═",
+    \ "Deleted"   : "✖",
+    \ "Dirty"     : "✗",
+    \ "Clean"     : "✔︎",
+    \ 'Ignored'   : '☒',
+    \ "Unknown"   : "?"
+    \ }
 
-au BufNewFile,BufRead *.py set tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
-
+"=====================================================
+"" majutsushi/tagbar
+"=====================================================
 let g:tagbar_usearrows = 1
 nmap <F8> :TagbarToggle<CR>
+
+"=====================================================
+"" shougo/deoplete.nvim
+"=====================================================
+let g:deoplete#enable_at_startup = 1
+
+"=====================================================
+"" vim-airline/vim-airline
+"=====================================================
+let g:airline_theme                        = 'onedark'
+let g:airline#extensions#branch#enable     = 1
+let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#bufferline#enabled= 1
+
+"##################################################################################
+
+let g:gitgutter_override_sign_column_highlight = 1
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -267,16 +216,6 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_auto_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
+let g:syntastic_python_flake8_args='--ignore=E501,E402'
 
-" SO HARDCODE
-" noremap <Up> <NOP>
-" noremap <Down> <NOP>
-" noremap <Left> <NOP>
-" noremap <Right> <NOP>
-
-" autocmd VimEnter,BufNewFile,BufReadPost * silent! call HardMode()
-" Soon
-"
-autocmd VimEnter * nested :call tagbar#autoopen(1)
-let g:syntastic_python_flake8_args='--ignore=E501'
 au BufWrite *.py :Autoformat
