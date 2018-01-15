@@ -26,52 +26,46 @@ Plugin 'VundleVim/Vundle.vim'
 "-------------------=== Code/Project navigation ===-------------
 Plugin 'scrooloose/nerdtree'
 Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'kien/ctrlp.vim'
 Plugin 'majutsushi/tagbar'
 
 "-------------------=== Colors ===------------------------------
 Plugin 'flazz/vim-colorschemes'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'joshdick/onedark.vim'
+Plugin 'ajh17/Spacegray.vim'
 
 "-------------------=== Airline ===-----------------------------
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 
 "-------------------=== Lint ===--------------------------------
-Plugin 'scrooloose/syntastic'
+Plugin 'w0rp/ale'
 
 "-------------------=== Git ===---------------------------------
 Plugin 'tpope/vim-fugitive'
 Plugin 'airblade/vim-gitgutter'
 
 "-------------------=== Other ===-------------------------------
-Plugin 'tpope/vim-commentary'
-Plugin 'Shougo/deoplete.nvim'
+Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'SirVer/ultisnips'
+Plugin 'honza/vim-snippets'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'junegunn/vim-easy-align'
-Plugin 'Chiel92/vim-autoformat'
 Plugin 'zchee/deoplete-jedi'
 Plugin 'ntpeters/vim-better-whitespace'
-Plugin 'sheerun/vim-polyglot'
-" Plugin 'elentok/plaintasks.vim'
-" Plugin 'tpope/vim-surround'
-" Plugin 'Townk/vim-autoclose'
-" Plugin 'michaeljsmith/vim-indent-object'
-" Plugin 'fisadev/dragvisuals.vim'
-" Plugin 'lilydjwg/colorizer'
-"
-" Plugin 'SirVer/ultisnips'
-" Plugin 'honza/vim-snippets'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'junegunn/fzf.vim'
+Plugin 'gilsondev/searchtasks.vim'
+
 "-------------------=== Languages ===---------------------------
-" Plugin 'ekalinin/Dockerfile.vim'
-" Plugin 'hashivim/vim-hashicorp-tools'
-" Plugin 'm-kat/aws-vim'
-" Plugin 'elzr/vim-json'
+Plugin 'sheerun/vim-polyglot'
+Plugin 'hashivim/vim-hashicorp-tools'
+Plugin 'm-kat/aws-vim'
+
 "-------------------=== Python ===------------------------------
-" Plugin 'nvie/vim-flake8'
-" Plugin 'fisadev/vim-isort'
-" Plugin 'davidhalter/jedi-vim'
+Plugin 'fs111/pydoc.vim'
+
 "
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -89,7 +83,12 @@ set nobackup
 
 set t_Co=256                         " set 256 colors
 set background=dark                  " background
-let g:solarized_termcolors=256
+
+if (has("termguicolors"))
+  set termguicolors
+endif
+
+let base16colorspace=256             " Access colors present in 256 colorspace
 colorscheme onedark                  " set color scheme
 
 set clipboard^=unnamed,unnamedplus   " use system clipboard
@@ -101,7 +100,7 @@ set report=0                         " always show report messages
 set ttyfast                          " terminal acceleration
 set lazyredraw
 
-set backspace=indent,eol,start       " fix backspace issue on vim8
+set backspace=indent,eol,start       " OSX stupid backspace fix
 
 set encoding=utf-8                   " utf-8 by default"
 
@@ -139,28 +138,55 @@ hi CursorLine cterm=underline gui=underline
 set splitbelow
 set splitright
 
-" 80 and 120 char limit
-let &colorcolumn=join(range(81,999),",")
-highlight ColorColumn ctermbg=236 guibg=#2c2d27
-let &colorcolumn="80,".join(range(120,999),",")
 " Enable folding
 set foldmethod=indent
 set foldlevel=99
 " Enable folding with the spacebar
 nnoremap <space> za
 
+" Split movment with Crtl-h/j/k/l
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+"=====================================================
+"" Tabs settings
+"=====================================================
+set tabstop=4
+set shiftwidth=4
+set smarttab
+set expandtab
+
+"=====================================================
+"" Python settings
+"=====================================================
+let g:python_host_prog = '/Users/pkieszcz/.pyenv/versions/neovim2/bin/python'
+let g:python3_host_prog = '/Users/pkieszcz/.pyenv/versions/neovim3/bin/python'
+
+au BufNewFile,BufRead *.py set tabstop=4 \softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
+" 80 and 120 char limit
+let &colorcolumn=join(range(81,999),",")
+highlight colorcolumn ctermbg=236 guibg=#2c323c
+let &colorcolumn="80,".join(range(120,999),",")
+
 "==============================================================================
 "" Plugins config
 "==============================================================================
-au BufNewFile,BufRead *.py set tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
+
 "=====================================================
 "" scrooloose/nerdtree
 "=====================================================
 let NERDTreeIgnore=['\~$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
 
-autocmd VimEnter * NERDTree
-autocmd VimEnter * wincmd p
+" Open NERDTree on startup
+autocmd VimEnter * if !argc() | NERDTree | endif
+"autocmd VimEnter * NERDTree
+"autocmd VimEnter * wincmd p
+
+" Close vim if NERDtree if there is no files
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+" Bind Ctrl-n to toggle
 map <C-n> :NERDTreeToggle<CR>
 
 let g:NERDSpaceDelims = 1
@@ -190,6 +216,7 @@ let g:NERDTreeIndicatorMapCustom = {
 "=====================================================
 let g:tagbar_usearrows = 1
 nmap <F8> :TagbarToggle<CR>
+"autocmd VimEnter * TagbarOpen
 
 "=====================================================
 "" shougo/deoplete.nvim
@@ -201,21 +228,35 @@ let g:deoplete#enable_at_startup = 1
 "=====================================================
 let g:airline_theme                        = 'onedark'
 let g:airline#extensions#branch#enable     = 1
-let g:airline#extensions#syntastic#enabled = 1
+let g:airline#extensions#ale#enabled       = 1
 let g:airline#extensions#bufferline#enabled= 1
+let g:hybrid_custom_term_colors = 1
+let g:hybrid_reduced_contrast = 1
 
-"##################################################################################
+"=====================================================
+"" 'w0rp/ale'
+"=====================================================
+let g:ale_set_loclist = 1
+let g:ale_open_list = 1
+let g:ale_list_window_size = 6
+let g:ale_sign_column_always = 1
+let g:ale_linters = { 'python': ['flake8'], }
+let b:ale_fixers = { 'python': ['yapf'] }
+let g:ale_echo_msg_error_str = 'E'
+let g:ale_echo_msg_warning_str = 'W'
+let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
 
+"=====================================================
+"" 'airblade/vim-gitgutter'
+"=====================================================
 let g:gitgutter_override_sign_column_highlight = 1
 
-set statusline+=%#warningmsg#
-set statusline+=%{SyntasticStatuslineFlag()}
-set statusline+=%*
+"=====================================================
+"" 'SirVer/ultisnips'
+"=====================================================
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 
-let g:syntastic_always_populate_loc_list = 1
-let g:syntastic_auto_loc_list = 1
-let g:syntastic_check_on_open = 1
-let g:syntastic_check_on_wq = 0
-let g:syntastic_python_flake8_args='--ignore=E501,E402'
-
-au BufWrite *.py :Autoformat
+" If you want :UltiSnipsEdit to split your window.
+let g:UltiSnipsEditSplit="vertical"

@@ -1,56 +1,56 @@
 [user]
-	name  = Piotr Kieszczyński
-	email = piotr.kieszczynski@nordcloud.com
+    name  = Piotr Kieszczyński
+    email = piotr.kieszczynski@nordcloud.com
 [branch]
-	autosetuprebase = always
+    autosetuprebase = always
 [branch "master"]
-	rebase = true 
+    rebase = true
 [alias]
-	git = !exec git
-	a = add
-	b = branch
-	c = commit
-	branches = branch -a
-	stashes = stash list
-	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
-        prune = fetch --prune
-        s = status -sb
-        undo = reset --soft HEAD^
-        stash-all = stash save --include-untracked
-        aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ \t => \\2/' | sort
-        tags = tag -l
+    git = !exec git
+    a = add
+    b = branch
+    c = commit
+    branches = branch -a
+    stashes = stash list
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    prune = fetch --prune
+    s = status -sb
+    undo = reset --soft HEAD^
+    stash-all = stash save --include-untracked
+    aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ \t => \\2/' | sort
+    tags = tag -l
 [pull]
-	rebase = true
+    rebase = true
 [merge]
-	ff = only
-	conflictstyle = diff3
+    ff = only
+    conflictstyle = diff3
 [push]
-	default = simple
-	followTags = true
+    default = simple
+    followTags = true
 [status]
-	showUntrackedFiles = all
+    showUntrackedFiles = all
 [transfer]
-	fsckobjects = true
+    fsckobjects = true
 [diff]
-        tool = icdiff
+    tool = icdiff
 [difftool]
-	prompt = false
+    prompt = false
 [difftool "icdiff"]
-	cmd = /usr/local/bin/icdiff --line-numbers $LOCAL $REMOTE
+    cmd = /usr/local/bin/icdiff --line-numbers $LOCAL $REMOTE
 [color]
-	ui = true
+    ui = true
 [color "branch"]
-        current = yellow reverse
-        local = yellow
-        remote = green
+    current = yellow reverse
+    local = yellow
+    remote = green
 
 [color "diff"]
-        meta = yellow bold
-        frag = magenta bold
-        old = red bold
-        new = green bold
+    meta = yellow bold
+    frag = magenta bold
+    old = red bold
+    new = green bold
 
 [color "status"]
-        added = yellow
-        changed = green
-        untracked = red
+    added = yellow
+    changed = green
+    untracked = red
