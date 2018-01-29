@@ -29,8 +29,6 @@
     followTags = true
 [status]
     showUntrackedFiles = all
-[transfer]
-    fsckobjects = true
 [diff]
     tool = icdiff
 [difftool]

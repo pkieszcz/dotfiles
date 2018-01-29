@@ -55,8 +55,12 @@ Plugin 'junegunn/vim-easy-align'
 Plugin 'zchee/deoplete-jedi'
 Plugin 'ntpeters/vim-better-whitespace'
 Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'junegunn/fzf.vim'
 Plugin 'gilsondev/searchtasks.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'fisadev/vim-ctrlp-cmdpalette'
+Plugin 'fisadev/FixedTaskList.vim'
+Plugin 'mileszs/ack.vim'
+Plugin 'junegunn/fzf.vim'
 
 "-------------------=== Languages ===---------------------------
 Plugin 'sheerun/vim-polyglot'
@@ -93,7 +97,7 @@ colorscheme onedark                  " set color scheme
 
 set clipboard^=unnamed,unnamedplus   " use system clipboard
 
-set number relativenumber            " show line number
+set number                           " show line number
 set history=10000                    " how many lines of history VIM has to remember
 set report=0                         " always show report messages
 
