@@ -53,5 +53,5 @@
     changed = green
     untracked = red
 [credential]
-	helper = !aws codecommit credential-helper $@
+	helper = !aws --profile CodeCommitProfile codecommit credential-helper $@
 	UseHttpPath = true

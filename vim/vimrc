@@ -168,7 +168,7 @@ set expandtab
 let g:python_host_prog = '/Users/pkieszcz/.pyenv/versions/neovim2/bin/python'
 let g:python3_host_prog = '/Users/pkieszcz/.pyenv/versions/neovim3/bin/python'
 
-au BufNewFile,BufRead *.py set tabstop=4 \softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
+au BufNewFile,BufRead *.py set tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
 " 80 and 120 char limit
 let &colorcolumn=join(range(81,999),",")
 highlight colorcolumn ctermbg=236 guibg=#2c323c
