@@ -11,68 +11,80 @@
 " Be iMproved
 set nocompatible
 
-"=====================================================
-"" Vundle settings
-"=====================================================
-filetype off                 " required
-
+" check whether vim-plug is installed and install it if necessary
+let plugpath = expand('<sfile>:p:h'). '/autoload/plug.vim'
+if !filereadable(plugpath)
+    if executable('curl')
+        let plugurl = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+        call system('curl -fLo ' . shellescape(plugpath) . ' --create-dirs ' . plugurl)
+        if v:shell_error
+            echom "Error downloading vim-plug. Please install it manually.\n"
+            exit
+        endif
+    else
+        echom "vim-plug not installed. Please install it manually or install curl.\n"
+        exit
+    endif
+endif
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+call plug#begin('~/.vim/plugged')
 
 "-------------------=== Code/Project navigation ===-------------
-Plugin 'scrooloose/nerdtree'
-Plugin 'Xuyuanp/nerdtree-git-plugin'
-Plugin 'majutsushi/tagbar'
+Plug 'scrooloose/nerdtree'
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'majutsushi/tagbar'
 
 "-------------------=== Colors ===------------------------------
-Plugin 'flazz/vim-colorschemes'
-Plugin 'altercation/vim-colors-solarized'
-Plugin 'joshdick/onedark.vim'
-Plugin 'ajh17/Spacegray.vim'
+Plug 'mhartington/oceanic-next'
 
 "-------------------=== Airline ===-----------------------------
-Plugin 'vim-airline/vim-airline'
-Plugin 'vim-airline/vim-airline-themes'
+Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 
 "-------------------=== Lint ===--------------------------------
-Plugin 'w0rp/ale'
+Plug 'w0rp/ale'
 
 "-------------------=== Git ===---------------------------------
-Plugin 'tpope/vim-fugitive'
-Plugin 'airblade/vim-gitgutter'
+Plug 'tpope/vim-fugitive'
+Plug 'mhinz/vim-signify'
+Plug 'airblade/vim-gitgutter'
 
 "-------------------=== Other ===-------------------------------
-Plugin 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plugin 'scrooloose/nerdcommenter'
-Plugin 'SirVer/ultisnips'
-Plugin 'honza/vim-snippets'
-Plugin 'jiangmiao/auto-pairs'
-Plugin 'junegunn/vim-easy-align'
-Plugin 'zchee/deoplete-jedi'
-Plugin 'ntpeters/vim-better-whitespace'
-Plugin 'nathanaelkane/vim-indent-guides'
-Plugin 'gilsondev/searchtasks.vim'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'fisadev/vim-ctrlp-cmdpalette'
-Plugin 'fisadev/FixedTaskList.vim'
-Plugin 'mileszs/ack.vim'
-Plugin 'junegunn/fzf.vim'
-
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
+Plug 'scrooloose/nerdcommenter'
+Plug 'jiangmiao/auto-pairs'
+Plug 'junegunn/vim-easy-align'
+Plug 'ntpeters/vim-better-whitespace'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'Yggdroot/indentLine'
+Plug 'adelarsq/vim-matchit'
+Plug 'luochen1990/rainbow'
+Plug 'tpope/vim-surround'
+Plug 'easymotion/vim-easymotion'
+Plug 'wikitopian/hardmode'
+Plug 'Shougo/neosnippet'
+Plug 'Shougo/neosnippet-snippets'
+Plug 'sebosp/vim-snippets-terraform'
 "-------------------=== Languages ===---------------------------
-Plugin 'sheerun/vim-polyglot'
-Plugin 'hashivim/vim-hashicorp-tools'
-Plugin 'm-kat/aws-vim'
+Plug 'sheerun/vim-polyglot'
+Plug 'hashivim/vim-hashicorp-tools'
+Plug 'm-kat/aws-vim'
+Plug 'fatih/vim-go'
 
 "-------------------=== Python ===------------------------------
-Plugin 'fs111/pydoc.vim'
+Plug 'fs111/pydoc.vim'
 
-"
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
+"-------------------=== Terraform ===---------------------------
+Plug 'hashivim/vim-terraform'
+" All of your Plugs must be added before the following line
+call plug#end()
+
 filetype plugin indent on    " required
 filetype plugin on
 
@@ -84,20 +96,21 @@ set modelines=0
 
 syntax on                            " syntax highlight
 set nobackup
+set noswapfile
 
 set t_Co=256                         " set 256 colors
 set background=dark                  " background
 
-if (has("termguicolors"))
+if (has('termguicolors'))
   set termguicolors
 endif
 
 let base16colorspace=256             " Access colors present in 256 colorspace
-colorscheme onedark                  " set color scheme
+colorscheme OceanicNext              "set color scheme
 
 set clipboard^=unnamed,unnamedplus   " use system clipboard
 
-set number                           " show line number
+set relativenumber number            " show hybrid line number
 set history=10000                    " how many lines of history VIM has to remember
 set report=0                         " always show report messages
 
@@ -108,6 +121,7 @@ set backspace=indent,eol,start       " OSX stupid backspace fix
 
 set encoding=utf-8                   " utf-8 by default"
 
+set autoread                         "Automatically re-read file if a change was detected outside of vim
 set magic
 set title
 
@@ -116,11 +130,12 @@ set noerrorbells
 
 set nowrap
 set showcmd
-set showmode
+set noshowmode
 
 " Force saving files that require root permission
 cnoremap w!! w !sudo tee > /dev/null %
 
+inoremap jk <ESC>
 "=====================================================
 "" Search settings
 "=====================================================
@@ -170,9 +185,9 @@ let g:python3_host_prog = '/Users/pkieszcz/.pyenv/versions/neovim3/bin/python'
 
 au BufNewFile,BufRead *.py set tabstop=4 softtabstop=4 shiftwidth=4 textwidth=79 expandtab autoindent fileformat=unix
 " 80 and 120 char limit
-let &colorcolumn=join(range(81,999),",")
-highlight colorcolumn ctermbg=236 guibg=#2c323c
-let &colorcolumn="80,".join(range(120,999),",")
+let &colorcolumn=join(range(81,999),',')
+highlight colorcolumn ctermbg=236 guibg=#212121
+let &colorcolumn='80,'.join(range(120,999),',')
 
 "==============================================================================
 "" Plugins config
@@ -198,21 +213,21 @@ let g:NERDCompactSexyComs = 1
 let g:NERDDefaultAlign = 'left'
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
-
+let g:NerdTreeStatusline = ''
 "=====================================================
 "" Xuyuanp/nerdtree-git-plugin
 "=====================================================
 let g:NERDTreeIndicatorMapCustom = {
-    \ "Modified"  : "✹",
-    \ "Staged"    : "✚",
-    \ "Untracked" : "✭",
-    \ "Renamed"   : "➜",
-    \ "Unmerged"  : "═",
-    \ "Deleted"   : "✖",
-    \ "Dirty"     : "✗",
-    \ "Clean"     : "✔︎",
+    \ 'Modified'  : '✹',
+    \ 'Staged'    : '✚',
+    \ 'Untracked' : '✭',
+    \ 'Renamed'   : '➜',
+    \ 'Unmerged'  : '═',
+    \ 'Deleted'   : '✖',
+    \ 'Dirty'     : '✗',
+    \ 'Clean'     : '✔︎',
     \ 'Ignored'   : '☒',
-    \ "Unknown"   : "?"
+    \ 'Unknown'   : '?'
     \ }
 
 "=====================================================
@@ -225,17 +240,31 @@ nmap <F8> :TagbarToggle<CR>
 "=====================================================
 "" shougo/deoplete.nvim
 "=====================================================
+let g:deoplete#omni_patterns = {}
+let g:deoplete#enable_smart_case = 1
+let g:deoplete#omni_patterns.terraform = '[^ *\t"{=$]\w*'
 let g:deoplete#enable_at_startup = 1
+call deoplete#initialize()
+
+let g:deoplete#sources#syntax#min_keyword_length = 2
+
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
 
 "=====================================================
 "" vim-airline/vim-airline
 "=====================================================
-let g:airline_theme                        = 'onedark'
+let g:airline_theme                        = 'space'
 let g:airline#extensions#branch#enable     = 1
 let g:airline#extensions#ale#enabled       = 1
 let g:airline#extensions#bufferline#enabled= 1
 let g:hybrid_custom_term_colors = 1
 let g:hybrid_reduced_contrast = 1
+let g:airline#extensions#default#layout = [['a', 'b', 'c'], ['z', 'warning', 'error']]
+let g:airline_section_b = airline#section#create_left(['branch'])
+let g:airline_section_z = airline#section#create(['linenr'])
+let g:airline#extensions#tabline#formatter = 'unique_tail'
+let g:airline_exclude_preview = 1
 
 "=====================================================
 "" 'w0rp/ale'
@@ -244,11 +273,15 @@ let g:ale_set_loclist = 1
 let g:ale_open_list = 1
 let g:ale_list_window_size = 6
 let g:ale_sign_column_always = 1
-let g:ale_linters = { 'python': ['flake8'], }
-let b:ale_fixers = { 'python': ['yapf'] }
+let g:ale_sign_error = '⁉'
+let g:ale_sign_warning = '•'
 let g:ale_echo_msg_error_str = 'E'
 let g:ale_echo_msg_warning_str = 'W'
 let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+let g:ale_virtualenv_dir_names = []
+let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_enter = 1
 
 "=====================================================
 "" 'airblade/vim-gitgutter'
@@ -258,9 +291,29 @@ let g:gitgutter_override_sign_column_highlight = 1
 "=====================================================
 "" 'SirVer/ultisnips'
 "=====================================================
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<c-b>"
-let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:UltiSnipsExpandTrigger='<tab>'
+let g:UltiSnipsJumpForwardTrigger='<c-b>'
+let g:UltiSnipsJumpBackwardTrigger='<c-z>'
 
 " If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit="vertical"
+let g:UltiSnipsEditSplit='vertical'
+
+let g:ale_python_flake8_args='--ignore=E501,E402,F403'
+
+" Disable Arrow keys in Escape mode
+map <up> <nop>
+map <down> <nop>
+map <left> <nop>
+map <right> <nop>
+
+" Disable Arrow keys in Insert mode
+imap <up> <nop>
+imap <down> <nop>
+imap <left> <nop>
+imap <right> <nop>
+
+let g:rainbow_active = 1
+
+let g:terraform_fmt_on_save=1
+let g:terraform_align=1
+

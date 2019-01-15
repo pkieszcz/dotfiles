@@ -1,5 +1,5 @@
 [user]
-    name  = Piotr Kieszczyński
+    name = Piotr Kieszczyński
     email = piotr.kieszczynski@nordcloud.com
 [branch]
     autosetuprebase = always
@@ -19,6 +19,7 @@
     stash-all = stash save --include-untracked
     aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ \t => \\2/' | sort
     tags = tag -l
+    update = remote update --prune
 [pull]
     rebase = true
 [merge]
@@ -53,5 +54,10 @@
     changed = green
     untracked = red
 [credential]
-	helper = !aws --profile CodeCommitProfile codecommit credential-helper $@
-	UseHttpPath = true
+    #helper = !aws --profile CodeCommitProfile codecommit credential-helper $@
+#	UseHttpPath = true
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
