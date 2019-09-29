@@ -1,0 +1,24 @@
+config defaultToCurrentScreen true
+config modalEscapeKey esc
+config secondsBeforeRepeat 0.4
+config secondsBetweenRepeat 0.1
+config keyboardLayout "qwerty"
+config nudgePercentOf screenSize
+config resizePercentOf screenSize
+
+alias hyper alt;cmd
+
+alias editor 'Code'
+bind x:cmd focus ${editor}
+
+alias browser 'Google Chrome'
+bind b:cmd focus ${broswer}
+
+alias full move screenOriginX;screenOriginY screenSizeX;screenSizeY
+bind g:${hyper} ${full}
+
+alias righthalf move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY
+bind f:${hyper} ${righthalf}
+
+alias lefthalf move screenOriginX;screenOriginY screenSizeX/2;screenSizeY
+bind a:${hyper} ${lefthalf}
