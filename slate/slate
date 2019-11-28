@@ -9,10 +9,12 @@ config resizePercentOf screenSize
 alias hyper alt;cmd
 
 alias editor 'Code'
-bind x:cmd focus ${editor}
+
+alias terminal 'iTerm2'
+bind x:cmd focus ${terminal}
 
 alias browser 'Google Chrome'
-bind b:cmd focus ${broswer}
+bind b:cmd focus ${browser}
 
 alias full move screenOriginX;screenOriginY screenSizeX;screenSizeY
 bind g:${hyper} ${full}
@@ -22,3 +24,5 @@ bind f:${hyper} ${righthalf}
 
 alias lefthalf move screenOriginX;screenOriginY screenSizeX/2;screenSizeY
 bind a:${hyper} ${lefthalf}
+alias center move screenOriginX+((screenSizeX-windowSizeX)/2);screenOriginY+((screenSizeY-windowSizeY)/2) windowSizeX;windowSizeY
+bind s:${hyper} ${center}
