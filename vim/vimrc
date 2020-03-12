@@ -36,6 +36,13 @@ Plug 'majutsushi/tagbar'
 
 "-------------------=== Colors ===------------------------------
 Plug 'mhartington/oceanic-next'
+Plug 'morhetz/gruvbox'
+Plug 'jacoborus/tender.vim'
+Plug 'sjl/badwolf'
+Plug 'tomasr/molokai'
+Plug 'sonph/onehalf'
+Plug 'dracula/vim'
+Plug 'miguelmota/oblivion.vim'
 
 "-------------------=== Airline ===-----------------------------
 Plug 'vim-airline/vim-airline'
@@ -106,7 +113,7 @@ if (has('termguicolors'))
 endif
 
 let base16colorspace=256             " Access colors present in 256 colorspace
-colorscheme OceanicNext              "set color scheme
+colorscheme molokai              "set color scheme
 
 set clipboard^=unnamed,unnamedplus   " use system clipboard
 
@@ -254,7 +261,7 @@ autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
 "=====================================================
 "" vim-airline/vim-airline
 "=====================================================
-let g:airline_theme                        = 'space'
+let g:airline_theme                        = 'molokai'
 let g:airline#extensions#branch#enable     = 1
 let g:airline#extensions#ale#enabled       = 1
 let g:airline#extensions#bufferline#enabled= 1
@@ -297,8 +304,6 @@ let g:UltiSnipsJumpBackwardTrigger='<c-z>'
 
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit='vertical'
-
-let g:ale_python_flake8_args='--ignore=E501,E402,F403'
 
 " Disable Arrow keys in Escape mode
 map <up> <nop>

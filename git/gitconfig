@@ -10,13 +10,17 @@
     a = add
     b = branch
     c = commit
+    ci = commit
+    cm = commit
+    co = checkout
+    com = checkout master
     branches = branch -a
     stashes = stash list
     lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    po = pull origin
+    pom = pull origin master
     prune = fetch --prune
     s = status -sb
-    undo = reset --soft HEAD^
-    stash-all = stash save --include-untracked
     aliases = !git config --list | grep 'alias\\.' | sed 's/alias\\.\\([^=]*\\)=\\(.*\\)/\\1\\ \t => \\2/' | sort
     tags = tag -l
     update = remote update --prune

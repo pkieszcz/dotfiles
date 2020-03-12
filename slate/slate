@@ -1,28 +1,85 @@
+# Configs
 config defaultToCurrentScreen true
+config nudgePercentOf screenSize
+config resizePercentOf screenSize
+config checkDefaultsOnLoad true
+config keyboardLayout qwerty
 config modalEscapeKey esc
 config secondsBeforeRepeat 0.4
 config secondsBetweenRepeat 0.1
 config keyboardLayout "qwerty"
-config nudgePercentOf screenSize
-config resizePercentOf screenSize
 
+# Locations aliases
+alias full move screenOriginX;screenOriginY screenSizeX;screenSizeY
+alias righthalf move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY
+alias lefthalf move screenOriginX;screenOriginY screenSizeX/2;screenSizeY
+alias center move screenOriginX+((screenSizeX-windowSizeX)/2);screenOriginY+((screenSizeY-windowSizeY)/2) windowSizeX;windowSizeY
+
+alias newleft move screenOriginX;screenOriginY 1400;1417
+alias newright move screenOriginX+1401;screenOriginY 2040;1417
+
+alias center3        move screenOriginX+2*screenSizeX/6;screenOriginY screenSizeX/3;screenSizeY
+alias left3          move screenOriginX;screenOriginY screenSizeX/3;screenSizeY
+alias left3-1        move screenOriginX+screenSizeX/6;screenOriginY 2*screenSizeX/6;screenSizeY
+alias left6-1        move screenOriginX;screenOriginY screenSizeX/6;screenSizeY
+alias left6-2        move screenOriginX+screenSizeX/6;screenOriginY screenSizeX/6;screenSizeY
+alias left6-3        move screenOriginX+2*screenSizeX/6;screenOriginY screenSizeX/6;screenSizeY
+alias left7          move screenOriginX;screenOriginY 2*screenSizeX/3;screenSizeY
+alias right3         move screenOriginX+2*screenSizeX/3;screenOriginY screenSizeX/3;screenSizeY
+alias right3-1       move screenOriginX+3*screenSizeX/6;screenOriginY 2*screenSizeX/6;screenSizeY
+alias right6-1       move screenOriginX+5*screenSizeX/6;screenOriginY screenSizeX/6;screenSizeY
+alias right6-2       move screenOriginX+4*screenSizeX/6;screenOriginY screenSizeX/6;screenSizeY
+alias right6-3       move screenOriginX+3*screenSizeX/6;screenOriginY screenSizeX/6;screenSizeY
+alias right7         move screenOriginX+screenSizeX/3;screenOriginY 2*screenSizeX/3;screenSizeY
+alias tophalf        push top bar-resize:screenSizeY/2
+alias topcenter      move screenOriginX+screenSizeX/3;screenOriginY screenSizeX/3;screenSizeY/2
+alias bottomhalf     push bottom bar-resize:screenSizeY/2
+alias bottomcenter   move screenOriginX+screenSizeX/3;screenOriginY+screenSizeY/2 screenSizeX/3;screenSizeY/2
+alias topleft        corner top-left resize:screenSizeX/2;screenSizeY/2
+alias topleft3       corner top-left resize:screenSizeX/3;screenSizeY/2
+alias topleft3-1     move screenOriginX+screenSizeX/6;screenOriginY screenSizeX/3;screenSizeY/2
+alias topleft6-1     move screenOriginX;screenOriginY screenSizeX/6;screenSizeY/2
+alias topleft6-2     move screenOriginX+screenSizeX/6;screenOriginY screenSizeX/6;screenSizeY/2
+alias topleft6-3     move screenOriginX+2*screenSizeX/6;screenOriginY screenSizeX/6;screenSizeY/2
+alias topleft7       corner top-left resize:2*screenSizeX/3;screenSizeY/2
+alias topright       corner top-right resize:screenSizeX/2;screenSizeY/2
+alias topright3-1    move screenOriginX+3*screenSizeX/6;screenOriginY screenSizeX/3;screenSizeY/2
+alias topright6-1    move screenOriginX+5*screenSizeX/6;screenOriginY screenSizeX/6;screenSizeY/2
+alias topright6-2    move screenOriginX+4*screenSizeX/6;screenOriginY screenSizeX/6;screenSizeY/2
+alias topright6-3    move screenOriginX+3*screenSizeX/6;screenOriginY screenSizeX/6;screenSizeY/2
+alias topright3      corner top-right resize:screenSizeX/3;screenSizeY/2
+alias topright7      corner top-right resize:2*screenSizeX/3;screenSizeY/2
+alias bottomleft     corner bottom-left resize:screenSizeX/2;screenSizeY/2
+alias bottomleft3    corner bottom-left resize:screenSizeX/3;screenSizeY/2
+alias bottomleft3-1  move screenOriginX+screenSizeX/6;screenOriginY+screenSizeY/2 screenSizeX/3;screenSizeY/2
+alias bottomleft6-1  move screenOriginX;screenOriginY+screenSizeY/2 screenSizeX/6;screenSizeY/2
+alias bottomleft6-2  move screenOriginX+screenSizeX/6;screenOriginY+screenSizeY/2 screenSizeX/6;screenSizeY/2
+alias bottomleft6-3  move screenOriginX+2*screenSizeX/6;screenOriginY+screenSizeY/2 screenSizeX/6;screenSizeY/2
+alias bottomleft7    corner bottom-left resize:2*screenSizeX/3;screenSizeY/2
+alias bottomright    corner bottom-right resize:screenSizeX/2;screenSizeY/2
+alias bottomright3   corner bottom-right resize:screenSizeX/3;screenSizeY/2
+alias bottomright3-1 move screenOriginX+3*screenSizeX/6;screenOriginY+screenSizeY/2 screenSizeX/3;screenSizeY/2
+alias bottomright6-1 move screenOriginX+5*screenSizeX/6;screenOriginY+screenSizeY/2 screenSizeX/6;screenSizeY/2
+alias bottomright6-2 move screenOriginX+4*screenSizeX/6;screenOriginY+screenSizeY/2 screenSizeX/6;screenSizeY/2
+alias bottomright6-3 move screenOriginX+3*screenSizeX/6;screenOriginY+screenSizeY/2 screenSizeX/6;screenSizeY/2
+alias bottomright7   corner bottom-right resize:2*screenSizeX/3;screenSizeY/2
+
+# The HYPER key
 alias hyper alt;cmd
 
+# App aliases
 alias editor 'Code'
-
+alias slack 'Slack'
 alias terminal 'iTerm2'
-bind x:cmd focus ${terminal}
-
 alias browser 'Google Chrome'
-bind b:cmd focus ${browser}
 
-alias full move screenOriginX;screenOriginY screenSizeX;screenSizeY
-bind g:${hyper} ${full}
+# Location bindings
+bind f:${hyper} ${full}
+bind l:${hyper} chain ${newright} | ${righthalf} | ${right7} | ${right3} | ${right3-1} | ${right6-1} | ${right6-2} | ${right6-3}
+bind h:${hyper} chain ${newleft} | ${lefthalf} | ${left7} | ${left3} | ${left3-1} | ${left6-1} | ${left6-2} | ${left6-3}
+bind s:${hyper} chain ${center} | ${center3}
 
-alias righthalf move screenOriginX+screenSizeX/2;screenOriginY screenSizeX/2;screenSizeY
-bind f:${hyper} ${righthalf}
-
-alias lefthalf move screenOriginX;screenOriginY screenSizeX/2;screenSizeY
-bind a:${hyper} ${lefthalf}
-alias center move screenOriginX+((screenSizeX-windowSizeX)/2);screenOriginY+((screenSizeY-windowSizeY)/2) windowSizeX;windowSizeY
-bind s:${hyper} ${center}
+# App bindings
+bind s:${hyper} focus ${slack}
+bind t:${hyper} focus ${terminal}
+bind b:${hyper} focus ${browser}
