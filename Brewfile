@@ -6,21 +6,33 @@ tap 'homebrew/cask-versions'
 tap 'homebrew/bundle'
 tap 'colindean/fonts-nonfree'
 tap 'buo/cask-upgrade'
+tap 'homebrew/cask-drivers'
+tap 'TylerBrock/saw'
+tap 'nektos/tap'
 
 # Binaries
 brew 'bat'
 brew 'mas' # Mac App Store manager
 brew 'neovim'
+brew 'awscli'
+brew 'saw'
+brew 'jq'
+brew 'gnu-sed'
 
 # *env
 brew 'pyenv'
 brew 'pyenv-virtualenv'
 brew 'goenv'
 brew 'tfenv'
+brew 'antigen'
+
+brew 'nektos/tap/act'
+brew 'xcodegen'
+brew 'watchman'
 
 # Apps
 cask 'appcleaner'
-cask 'caffeine'
+cask 'KeepingYouAwake'
 cask 'clipy'
 cask 'docker'
 cask 'enpass'
@@ -29,11 +41,14 @@ cask 'google-chrome'
 cask 'gpg-suite'
 cask 'iterm2'
 cask 'itsycal'
-cask 'nvidia-geforce-now'
 cask 'slack'
 cask 'slate'
 cask 'tableplus'
-cask 'vanilla'
+
+cask 'logitech-options'
+cask 'signal'
+cask 'steam'
+cask 'balenaetcher'
 
 # Fonts
 cask 'font-hack'

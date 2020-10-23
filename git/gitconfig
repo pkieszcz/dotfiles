@@ -1,6 +1,7 @@
 [user]
     name = Piotr Kieszczyński
     email = piotr.kieszczynski@gmail.com
+    signingKey = F4F001F4D3E81297
 [branch]
     autosetuprebase = always
 [branch "master"]
@@ -67,3 +68,5 @@
 	smudge = git-lfs smudge -- %f
 [url "git@github.com:"]
 	insteadOf = https://github.com/
+[commit]
+	gpgsign = true

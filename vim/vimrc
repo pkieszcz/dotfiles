@@ -7,10 +7,9 @@
 "                                                                              "
 "                                                                              "
 "++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++"
-
+"
 " Be iMproved
 set nocompatible
-
 " check whether vim-plug is installed and install it if necessary
 let plugpath = expand('<sfile>:p:h'). '/autoload/plug.vim'
 if !filereadable(plugpath)
@@ -32,63 +31,53 @@ call plug#begin('~/.vim/plugged')
 "-------------------=== Code/Project navigation ===-------------
 Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'majutsushi/tagbar'
-
 "-------------------=== Colors ===------------------------------
 Plug 'mhartington/oceanic-next'
-Plug 'morhetz/gruvbox'
-Plug 'jacoborus/tender.vim'
-Plug 'sjl/badwolf'
-Plug 'tomasr/molokai'
-Plug 'sonph/onehalf'
-Plug 'dracula/vim'
-Plug 'miguelmota/oblivion.vim'
 
 "-------------------=== Airline ===-----------------------------
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 
 "-------------------=== Lint ===--------------------------------
-Plug 'w0rp/ale'
+"Plug 'w0rp/ale'
 
 "-------------------=== Git ===---------------------------------
-Plug 'tpope/vim-fugitive'
-Plug 'mhinz/vim-signify'
+"Plug 'tpope/vim-fugitive'
+"Plug 'mhinz/vim-signify'
 Plug 'airblade/vim-gitgutter'
 
 "-------------------=== Other ===-------------------------------
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+"if has('nvim')
+  " Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+" else
+  " Plug 'Shougo/deoplete.nvim'
+  " Plug 'roxma/nvim-yarp'
+  " Plug 'roxma/vim-hug-neovim-rpc'
+" endif
+"Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
+"Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'scrooloose/nerdcommenter'
-Plug 'jiangmiao/auto-pairs'
-Plug 'junegunn/vim-easy-align'
-Plug 'ntpeters/vim-better-whitespace'
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'Yggdroot/indentLine'
-Plug 'adelarsq/vim-matchit'
-Plug 'luochen1990/rainbow'
-Plug 'tpope/vim-surround'
-Plug 'easymotion/vim-easymotion'
-Plug 'wikitopian/hardmode'
-Plug 'Shougo/neosnippet'
-Plug 'Shougo/neosnippet-snippets'
-Plug 'sebosp/vim-snippets-terraform'
+"Plug 'jiangmiao/auto-pairs'
+"Plug 'junegunn/vim-easy-align'
+"Plug 'ntpeters/vim-better-whitespace'
+"Plug 'nathanaelkane/vim-indent-guides'
+"Plug 'Yggdroot/indentLine'
+"Plug 'adelarsq/vim-matchit'
+"Plug 'luochen1990/rainbow'
+"Plug 'tpope/vim-surround'
+"Plug 'easymotion/vim-easymotion'
+"Plug 'wikitopian/hardmode'
+"Plug 'Shougo/neosnippet'
+"Plug 'Shougo/neosnippet-snippets'
+"Plug 'sebosp/vim-snippets-terraform'
 "-------------------=== Languages ===---------------------------
 Plug 'sheerun/vim-polyglot'
-Plug 'hashivim/vim-hashicorp-tools'
-Plug 'm-kat/aws-vim'
-Plug 'fatih/vim-go'
+"Plug 'hashivim/vim-hashicorp-tools'
+"Plug 'm-kat/aws-vim'
+"Plug 'fatih/vim-go'
+"Plug 'towolf/vim-helm'
+"Plug 'milch/vim-fastlane'
 
-"-------------------=== Python ===------------------------------
-Plug 'fs111/pydoc.vim'
-
-"-------------------=== Terraform ===---------------------------
-Plug 'hashivim/vim-terraform'
 " All of your Plugs must be added before the following line
 call plug#end()
 
@@ -100,6 +89,13 @@ filetype plugin on
 "=====================================================
 set secure                           " Security
 set modelines=0
+
+if has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
 
 syntax on                            " syntax highlight
 set nobackup
@@ -117,7 +113,7 @@ colorscheme OceanicNext              "set color scheme
 
 set clipboard^=unnamed,unnamedplus   " use system clipboard
 
-set relativenumber number            " show hybrid line number
+set number                           " show hybrid line number
 set history=10000                    " how many lines of history VIM has to remember
 set report=0                         " always show report messages
 
@@ -205,7 +201,7 @@ let &colorcolumn='80,'.join(range(120,999),',')
 "=====================================================
 let NERDTreeIgnore=['\~$', '\.swp$', '\.git', '\.hg', '\.svn', '\.bzr']
 
-" Open NERDTree on startup
+" Open NERDTree on startup 
 autocmd VimEnter * if !argc() | NERDTree | endif
 "autocmd VimEnter * NERDTree
 "autocmd VimEnter * wincmd p
@@ -221,42 +217,43 @@ let g:NERDDefaultAlign = 'left'
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
 let g:NerdTreeStatusline = ''
+
 "=====================================================
 "" Xuyuanp/nerdtree-git-plugin
 "=====================================================
-let g:NERDTreeIndicatorMapCustom = {
-    \ 'Modified'  : '✹',
-    \ 'Staged'    : '✚',
-    \ 'Untracked' : '✭',
-    \ 'Renamed'   : '➜',
-    \ 'Unmerged'  : '═',
-    \ 'Deleted'   : '✖',
-    \ 'Dirty'     : '✗',
-    \ 'Clean'     : '✔︎',
-    \ 'Ignored'   : '☒',
-    \ 'Unknown'   : '?'
-    \ }
+let g:NERDTreeGitStatusIndicatorMapCustom= {
+     \ 'Modified'  : '✹',
+     \ 'Staged'    : '✚',
+     \ 'Untracked' : '✭',
+     \ 'Renamed'   : '➜',
+     \ 'Unmerged'  : '═',
+     \ 'Deleted'   : '✖',
+     \ 'Dirty'     : '✗',
+     \ 'Clean'     : '✔︎',
+     \ 'Ignored'   : '☒',
+     \ 'Unknown'   : '?'
+     \ }
 
 "=====================================================
 "" majutsushi/tagbar
 "=====================================================
-let g:tagbar_usearrows = 1
-nmap <F8> :TagbarToggle<CR>
+"let g:tagbar_usearrows = 1
+"nmap <F8> :TagbarToggle<CR>
 "autocmd VimEnter * TagbarOpen
 
 "=====================================================
 "" shougo/deoplete.nvim
 "=====================================================
-let g:deoplete#omni_patterns = {}
-let g:deoplete#enable_smart_case = 1
-let g:deoplete#omni_patterns.terraform = '[^ *\t"{=$]\w*'
-let g:deoplete#enable_at_startup = 1
-call deoplete#initialize()
-
-let g:deoplete#sources#syntax#min_keyword_length = 2
-
-inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
-autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
+" let g:deoplete#omni_patterns = {}
+" let g:deoplete#enable_smart_case = 1
+" let g:deoplete#omni_patterns.terraform = '[^ *\t"{=$]\w*'
+" let g:deoplete#enable_at_startup = 1
+" call deoplete#initialize()
+"
+" let g:deoplete#sources#syntax#min_keyword_length = 2
+"
+" inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
+" autocmd FileType javascript nnoremap <silent> <buffer> gb :TernDef<CR>
 
 "=====================================================
 "" vim-airline/vim-airline
@@ -276,34 +273,34 @@ let g:airline_exclude_preview = 1
 "=====================================================
 "" 'w0rp/ale'
 "=====================================================
-let g:ale_set_loclist = 1
-let g:ale_open_list = 1
-let g:ale_list_window_size = 6
-let g:ale_sign_column_always = 1
-let g:ale_sign_error = '⁉'
-let g:ale_sign_warning = '•'
-let g:ale_echo_msg_error_str = 'E'
-let g:ale_echo_msg_warning_str = 'W'
-let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
-let g:ale_virtualenv_dir_names = []
-let g:ale_lint_on_text_changed = 0
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_enter = 1
+" let g:ale_set_loclist = 1
+" let g:ale_open_list = 1
+" let g:ale_list_window_size = 6
+" let g:ale_sign_column_always = 1
+" let g:ale_sign_error = '⁉'
+" let g:ale_sign_warning = '•'
+" let g:ale_echo_msg_error_str = 'E'
+" let g:ale_echo_msg_warning_str = 'W'
+" let g:ale_echo_msg_format = '[%linter%] %s [%severity%]'
+" let g:ale_virtualenv_dir_names = []
+" let g:ale_lint_on_text_changed = 0
+" let g:ale_lint_on_save = 1
+" let g:ale_lint_on_enter = 1
 
 "=====================================================
 "" 'airblade/vim-gitgutter'
 "=====================================================
-let g:gitgutter_override_sign_column_highlight = 1
+"let g:gitgutter_override_sign_column_highlight = 1
 
 "=====================================================
 "" 'SirVer/ultisnips'
 "=====================================================
-let g:UltiSnipsExpandTrigger='<tab>'
-let g:UltiSnipsJumpForwardTrigger='<c-b>'
-let g:UltiSnipsJumpBackwardTrigger='<c-z>'
+" let g:UltiSnipsExpandTrigger='<tab>'
+" let g:UltiSnipsJumpForwardTrigger='<c-b>'
+" let g:UltiSnipsJumpBackwardTrigger='<c-z>'
 
 " If you want :UltiSnipsEdit to split your window.
-let g:UltiSnipsEditSplit='vertical'
+"let g:UltiSnipsEditSplit='vertical'
 
 " Disable Arrow keys in Escape mode
 map <up> <nop>
@@ -317,8 +314,9 @@ imap <down> <nop>
 imap <left> <nop>
 imap <right> <nop>
 
-let g:rainbow_active = 1
+"let g:rainbow_active = 1
 
 let g:terraform_fmt_on_save=1
 let g:terraform_align=1
 
+set shell=/bin/zsh

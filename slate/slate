@@ -75,8 +75,8 @@ alias browser 'Google Chrome'
 
 # Location bindings
 bind f:${hyper} ${full}
-bind l:${hyper} chain ${newright} | ${righthalf} | ${right7} | ${right3} | ${right3-1} | ${right6-1} | ${right6-2} | ${right6-3}
-bind h:${hyper} chain ${newleft} | ${lefthalf} | ${left7} | ${left3} | ${left3-1} | ${left6-1} | ${left6-2} | ${left6-3}
+bind l:${hyper} chain ${righthalf} | ${newright} | ${right7} | ${right3} | ${right3-1} | ${right6-1} | ${right6-2} | ${right6-3}
+bind h:${hyper} chain ${lefthalf} | ${newleft} | ${left7} | ${left3} | ${left3-1} | ${left6-1} | ${left6-2} | ${left6-3}
 bind s:${hyper} chain ${center} | ${center3}
 
 # App bindings
